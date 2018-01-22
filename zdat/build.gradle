@@ -1,4 +1,9 @@
 //$ gradle assemble
+
+apply plugin: 'maven'
+
+group = 'com.github.uptimestar'
+
 apply plugin: 'java'
 sourceSets {
     main {
