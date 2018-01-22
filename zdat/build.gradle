@@ -1,0 +1,53 @@
+//$ gradle assemble
+apply plugin: 'java'
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.debug = true
+}
+
+repositories {
+    jcenter()
+}
+
+def jarName = "dat.jar"
+def version =  'v1.01.22c'
+
+task cleanUp(dependsOn: assemble) {
+  println 'clean build'
+  delete './release/'+jarName
+  delete '../../'+jarName
+}
+//zip up jars
+task zipJars(dependsOn: cleanUp )  {
+    doLast {
+        ant.zip(destfile: './release/'+jarName) {
+            zipgroupfileset(dir: './libs')
+            zipgroupfileset(dir: './build/libs')
+        }
+        println 'zip'   
+    }
+}
+defaultTasks  'zipJars'
+
+dependencies {    
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    
+	//compile 'org.apache.commons:commons-lang3:3.4'
+}
+
+jar { // modify release
+    manifest {
+        attributes( 
+                   'Implementation-Version': version           
+    )}
+}
+
+
+
