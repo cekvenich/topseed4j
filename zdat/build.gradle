@@ -28,7 +28,6 @@ def version =  'v1.01.22d'
 task cleanUp() {
   println 'clean build'
   delete './release/'+jarName
-  delete '../../'+jarName
 }
 //zip up jars
 task zipJars(type: Jar, dependsOn: cleanUp )  {
@@ -54,7 +53,9 @@ jar { // modify release
     )}
 }
 
+def releaseJar = file('release/dat.jar')
+
 artifacts {
-  archives file: 'dat.jar', name: 'dat', type: 'jar',  builtBy: zipJars
+  archives releaseJar builtBy zipJars
 }
 
