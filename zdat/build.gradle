@@ -6,6 +6,7 @@ group = 'com.github.uptimestar'
 apply plugin: 'java'
 sourceCompatibility = 1.8 // java 8
 targetCompatibility = 1.8
+
 sourceSets {
     main {
         java {
@@ -22,16 +23,16 @@ repositories {
   mavenCentral()
 }
 
-
 def jarName = "dat.jar"
-def version =  'v1.01.22xx'
+def version =  'v1.01.22x'
 
-task cleanUp() {
+task cleanUp(dependsOn: assemble) {
   println 'clean build'
   delete './release/'+jarName
+  delete '../../'+jarName
 }
 //zip up jars
-task zipJars(type: Jar, dependsOn: cleanUp )  {
+task zipJars(dependsOn: cleanUp )  {
     doLast {
         ant.zip(destfile: './release/'+jarName) {
             zipgroupfileset(dir: './libs')
@@ -45,6 +46,14 @@ defaultTasks  'zipJars'
 dependencies {    
     compile fileTree(dir: 'libs', include: ['*.jar'])
     
+	//compile 'org.apache.commons:commons-lang3:3.4'
+}
+
+jar { // modify release
+    manifest {
+        attributes( 
+                   'Implementation-Version': version           
+    )}
 }
 
 jar { // modify release
