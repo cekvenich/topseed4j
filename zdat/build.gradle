@@ -18,10 +18,11 @@ tasks.withType(JavaCompile) {
     options.fork = true
     options.debug = true
 }
+
 repositories {
- 	jcenter()
-	maven { url "https://jitpack.io" }
+    maven { url "https://jitpack.io" }
 }
+
 
 def jarName = "dat.jar"
 def version =  'v1.01.22e'
@@ -44,7 +45,6 @@ defaultTasks  'zipJars'
 
 dependencies {    
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.github.jitpack:gradle-simple:1.0'
     
 }
 
@@ -56,7 +56,6 @@ jar { // modify release
 }
 
 def releaseJar = file('release/dat.jar')
-
 artifacts {
   archives releaseJar builtBy zipJars
 }
