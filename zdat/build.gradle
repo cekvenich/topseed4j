@@ -6,7 +6,6 @@ group = 'com.github.uptimestar'
 apply plugin: 'java'
 sourceCompatibility = 1.8 // java 8
 targetCompatibility = 1.8
-
 sourceSets {
     main {
         java {
@@ -19,17 +18,13 @@ tasks.withType(JavaCompile) {
     options.debug = true
 }
 
-allprojects {
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven { url "https://jitpack.io" }
-    }
+repositories {
+  mavenCentral()
 }
 
 
 def jarName = "dat.jar"
-def version =  'v1.01.22x'
+def version =  'v1.01.22xx'
 
 task cleanUp() {
   println 'clean build'
@@ -59,7 +54,7 @@ jar { // modify release
     )}
 }
 
-def releaseJar = file('/release/dat.jar')
+def releaseJar = file('release/dat.jar')
 artifacts {
   archives releaseJar 
 }
