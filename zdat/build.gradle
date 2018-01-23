@@ -45,7 +45,6 @@ defaultTasks  'zipJars'
 dependencies {    
     compile fileTree(dir: 'libs', include: ['*.jar'])
     
-	//compile 'org.apache.commons:commons-lang3:3.4'
 }
 
 jar { // modify release
@@ -56,6 +55,6 @@ jar { // modify release
 }
 
 artifacts {
-    archives zipJars
+  archives file: 'dat.jar', name: 'dat', type: 'jar',  builtBy: zipJars
 }
 
