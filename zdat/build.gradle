@@ -19,13 +19,18 @@ tasks.withType(JavaCompile) {
     options.debug = true
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
+allprojects {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
 }
 
 
+
 def jarName = "dat.jar"
-def version =  'v1.01.22e'
+def version =  'v1.01.22x'
 
 task cleanUp() {
   println 'clean build'
@@ -57,6 +62,6 @@ jar { // modify release
 
 def releaseJar = file('release/dat.jar')
 artifacts {
-  archives releaseJar builtBy zipJars
+  archives releaseJar 
 }
 
