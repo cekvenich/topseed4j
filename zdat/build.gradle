@@ -1,10 +1,12 @@
 //$ gradle assemble
 
 apply plugin: 'maven'
-
 group = 'com.github.uptimestar'
 
 apply plugin: 'java'
+sourceCompatibility = 1.8 // java 8
+targetCompatibility = 1.8
+
 sourceSets {
     main {
         java {
@@ -16,21 +18,20 @@ tasks.withType(JavaCompile) {
     options.fork = true
     options.debug = true
 }
-
 repositories {
-    jcenter()
+  mavenCentral()
 }
 
 def jarName = "dat.jar"
-def version =  'v1.01.22c'
+def version =  'v1.01.22d'
 
-task cleanUp(dependsOn: assemble) {
+task cleanUp() {
   println 'clean build'
   delete './release/'+jarName
   delete '../../'+jarName
 }
 //zip up jars
-task zipJars(dependsOn: cleanUp )  {
+task zipJars(type: Jar, dependsOn: cleanUp )  {
     doLast {
         ant.zip(destfile: './release/'+jarName) {
             zipgroupfileset(dir: './libs')
@@ -54,5 +55,7 @@ jar { // modify release
     )}
 }
 
-
+artifacts {
+    archives zipJars
+}
 
