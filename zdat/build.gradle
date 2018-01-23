@@ -28,7 +28,6 @@ allprojects {
 }
 
 
-
 def jarName = "dat.jar"
 def version =  'v1.01.22x'
 
@@ -60,7 +59,7 @@ jar { // modify release
     )}
 }
 
-def releaseJar = file('release/dat.jar')
+def releaseJar = file('/release/dat.jar')
 artifacts {
   archives releaseJar 
 }
