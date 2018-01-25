@@ -1,10 +1,7 @@
 //$ gradle assemble
 
-apply plugin: 'maven'
-group = 'com.github.uptimestar'
-
 apply plugin: 'java'
-sourceCompatibility = 1.8 // java 8
+sourceCompatibility = 1.8 
 targetCompatibility = 1.8
 
 sourceSets {
@@ -24,7 +21,7 @@ repositories {
 }
 
 def jarName = "dat.jar"
-def version =  'v1.01.22x'
+def vversion =  'v1.01.22x'
 
 task cleanUp(dependsOn: assemble) {
   println 'clean build'
@@ -41,25 +38,17 @@ task zipJars(dependsOn: cleanUp )  {
         println 'zip'   
     }
 }
+
 defaultTasks  'zipJars'
 
 dependencies {    
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    
-	//compile 'org.apache.commons:commons-lang3:3.4'
-}
+    }
 
 jar { // modify release
     manifest {
         attributes( 
-                   'Implementation-Version': version           
-    )}
-}
-
-jar { // modify release
-    manifest {
-        attributes( 
-                   'Implementation-Version': version           
+                   'Implementation-Version': vversion           
     )}
 }
 
@@ -68,3 +57,41 @@ artifacts {
   archives releaseJar 
 }
 
+// task uploadArchives /////
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
+apply plugin: 'com.bmuschko.nexus'
+
+//signArchives.dependsOn zipJars
+
+archivesBaseName = 'topseed4j'
+group = "com.github.appthings"
+version = vversion
+modifyPom {
+    project {
+        name 'topseed4j'
+        url 'http://github.com/appthings/topseed4j/tree/master/zdat'
+        scm {
+            url 'http://github.com/appthings/topseed4j/tree/master/zdat'
+            connection 'scm:https://github.com/appthings/topseed4j.git'
+            developerConnection 'scm:git://github.com/appthings/topseed4j.git'
+       }
+      
+    }
+}
+extraArchive {
+    sources = false
+    tests = false
+    javadoc = false
+}
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+}
