@@ -58,7 +58,7 @@ jar { // modify release
     )}
 }
 
-def releaseJar = file('release/topseed4j.jar')
+def releaseJar = file('release/'+jarName)
 artifacts {
   archives releaseJar
 }
@@ -169,21 +169,33 @@ def customizePom(pom) {
 
 
 model {
-    tasks.generatePomFileForMavenJavaPublication {
-        dependsOn project.tasks.buildJar
-        destination = file("release/generated-pom.xml")
-    }
-    tasks.publishMavenJavaPublicationToMavenLocal {
-        dependsOn project.tasks.signArchives
-    }
-    tasks.publishMavenJavaPublicationToMavenRepository {
-        dependsOn project.tasks.signArchives
-    }
   tasks.signArchives {
         dependsOn project.tasks.buildJar
     }
+    tasks.generatePomFileForMavenJavaPublication {
+        dependsOn project.tasks.copyJarBack
+        destination = file("${project.buildDir}/generated-pom.xml")
+    }
+    tasks.publishMavenJavaPublicationToMavenLocal {
+        dependsOn project.tasks.generatePomFileForMavenJavaPublication
+    }
+    tasks.publishMavenJavaPublicationToMavenRepository {
+        dependsOn project.tasks.generatePomFileForMavenJavaPublication
+    }
+
 }
 
+task copyJarBack(dependsOn: signArchives ) {
+    println 'copy?'
+	doLast {
+		copy {
+	        from './release/'+jarName
+	        into './build/libs/'
+	    }
+	}
+    println 'copied!!'
+    
+}//copy
 
 
 
