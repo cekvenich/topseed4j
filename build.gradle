@@ -24,7 +24,7 @@ repositories {
   mavenCentral()
 }
 
-def jarName = "dat.jar"
+def jarName = "topseed4j.jar"
 def vversion =  'v1.01.22x'
 
 task cleanUp() {
@@ -58,13 +58,13 @@ jar { // modify release
     )}
 }
 
-def releaseJar = file('release/dat.jar')
+def releaseJar = file('release/topseed4j.jar')
 artifacts {
   archives releaseJar
 }
 
 
-///// release to maven:
+///// release to maven: //////////////////////////////////////////////
 
 signing {
   sign configurations.archives
@@ -170,7 +170,8 @@ def customizePom(pom) {
 
 model {
     tasks.generatePomFileForMavenJavaPublication {
-        destination = file("$buildDir/generated-pom.xml")
+        dependsOn project.tasks.buildJar
+        destination = file("release/generated-pom.xml")
     }
     tasks.publishMavenJavaPublicationToMavenLocal {
         dependsOn project.tasks.signArchives
@@ -178,7 +179,9 @@ model {
     tasks.publishMavenJavaPublicationToMavenRepository {
         dependsOn project.tasks.signArchives
     }
-
+  tasks.signArchives {
+        dependsOn project.tasks.buildJar
+    }
 }
 
 
