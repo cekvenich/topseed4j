@@ -1,8 +1,10 @@
 
 // 
 
-
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
 sourceCompatibility = 1.8 
 targetCompatibility = 1.8
 
@@ -60,7 +62,74 @@ artifacts {
 }
 
 
-//
+///// release to maven:
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId 'com.github.appthings'
+            artifactId 'topseed4j'
+            version vversion
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
+}
+
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies (no need in maven central POMs)
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        // add all items necessary for maven central publication
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'topseed4j'
+            name 'topseed4j'
+            url 'https://github.com/appthings/topseed4j'
+            organization {
+                name 'com.github.appthings'
+                url 'https://github.com/appthings/topseed4j'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/mautini/schemaorg-java/issues'
+            }
+            licenses {
+                license {
+                    name 'Apache License 2.0'
+                    url 'https://github.com/mautini/schemaorg-java/blob/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/appthings/topseed4j'
+                connection 'scm:git:git://github.com/appthings/topseed4j.git'
+                developerConnection 'scm:git:ssh://git@github.com:appthings/topseed4j.git'
+            }
+            developers {
+                developer {
+                    name 'several'
+                }
+            }
+        }
+    }
+}
 
 
