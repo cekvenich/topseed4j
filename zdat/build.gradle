@@ -1,4 +1,6 @@
-//$ gradle assemble
+
+// 
+
 
 apply plugin: 'java'
 sourceCompatibility = 1.8 
@@ -57,41 +59,8 @@ artifacts {
   archives releaseJar 
 }
 
-// task uploadArchives /////
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-    }
-}
-apply plugin: 'com.bmuschko.nexus'
 
-//signArchives.dependsOn zipJars
+//
 
-archivesBaseName = 'topseed4j'
-group = "com.github.appthings"
-version = vversion
-modifyPom {
-    project {
-        name 'topseed4j'
-        url 'http://github.com/appthings/topseed4j/tree/master/zdat'
-        scm {
-            url 'http://github.com/appthings/topseed4j/tree/master/zdat'
-            connection 'scm:https://github.com/appthings/topseed4j.git'
-            developerConnection 'scm:git://github.com/appthings/topseed4j.git'
-       }
-      
-    }
-}
-extraArchive {
-    sources = false
-    tests = false
-    javadoc = false
-}
-nexus {
-    sign = true
-    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
-}
+
+
