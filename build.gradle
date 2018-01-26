@@ -1,5 +1,9 @@
 
-//
+// http://stackoverflow.com/questions/3445825/gradle-how-do-i-build-a-jar-with-a-lib-dir-with-other-jars-in-it
+
+// http://medium.com/@nmauti/sign-and-publish-on-maven-central-a-project-with-the-new-maven-publish-gradle-plugin-22a72a4bfd4b
+
+// http://www.albertgao.xyz/2018/01/18/how-to-publish-artifact-to-maven-central-via-gradle
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
@@ -29,21 +33,13 @@ def vversion =  'v1.01.22x'
 
 task cleanUp() {
   println 'clean build'
-  delete './release/'+jarName
-}
-//zip up jars
-task zipJars(dependsOn: cleanUp)  {
-    doLast {
-        ant.zip(destfile: './release/'+jarName) {
-            zipgroupfileset(dir: './libs')
-            zipgroupfileset(dir: './build/libs')
-        }
-        println 'zip'
-    }
+  delete './build'
+
 }
 
+
 task buildJar(type: GradleBuild) {
-     tasks = ['compileJava', 'jar', 'zipJars']
+     tasks = ['cleanUp', 'compileJava', 'jar']
 }
 defaultTasks  'buildJar'
 
@@ -56,11 +52,9 @@ jar { // modify release
         attributes(
                    'Implementation-Version': vversion
     )}
-}
+    
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 
-def releaseJar = file('release/'+jarName)
-artifacts {
-  archives releaseJar
 }
 
 
@@ -81,7 +75,7 @@ publishing {
             from components.java
 
 
-      // create the sign pom artifact
+            // create the sign pom artifact
             pom.withXml {
                 def pomFile = file("${project.buildDir}/generated-pom.xml")
                 writeTo(pomFile)
@@ -173,7 +167,7 @@ model {
         dependsOn project.tasks.buildJar
     }
     tasks.generatePomFileForMavenJavaPublication {
-        dependsOn project.tasks.copyJarBack
+        dependsOn project.tasks.signArchives
         destination = file("${project.buildDir}/generated-pom.xml")
     }
     tasks.publishMavenJavaPublicationToMavenLocal {
@@ -185,17 +179,7 @@ model {
 
 }
 
-task copyJarBack(dependsOn: signArchives ) {
-    println 'copy?'
-	doLast {
-		copy {
-	        from './release/'+jarName
-	        into './build/libs/'
-	    }
-	}
-    println 'copied!!'
-    
-}//copy
+
 
 
 
