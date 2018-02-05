@@ -19,6 +19,12 @@ public class CCtx extends ContextBase {
 
 	protected FullHttpResponse _resp;
 
+	public int authRoleLevel;
+
+	public String session;
+
+	public boolean cache;
+
 	public CCtx(FullHttpRequest req) {
 		_req = req;
 	}
