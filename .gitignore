@@ -1,0 +1,16 @@
+# ban all
+*
+!*/
+!.gitignore
+!README.md
+
+# except white list to 
+# include (w/ ! prefix) :
+!/src/*.**
+!/javadoc/*.**
+!/ex/*.**
+
+!**/*.java
+
+!build.gradle
+!conf.props

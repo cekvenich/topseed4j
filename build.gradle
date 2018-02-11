@@ -1,0 +1,185 @@
+
+// http://stackoverflow.com/questions/3445825/gradle-how-do-i-build-a-jar-with-a-lib-dir-with-other-jars-in-it
+
+// http://medium.com/@nmauti/sign-and-publish-on-maven-central-a-project-with-the-new-maven-publish-gradle-plugin-22a72a4bfd4b
+
+// http://www.albertgao.xyz/2018/01/18/how-to-publish-artifact-to-maven-central-via-gradle
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.debug = true
+}
+
+repositories {
+  mavenCentral()
+}
+
+def jarName = "topseed4j.jar"
+def vversion =  'v1.02.10'
+
+task cleanUp() {
+  println 'clean build'
+  delete './build'
+
+}
+
+
+task buildJar(type: GradleBuild) {
+     tasks = ['cleanUp', 'compileJava', 'jar']
+}
+defaultTasks  'buildJar'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    }
+
+jar { // modify release
+    manifest {
+        attributes(
+                   'Implementation-Version': vversion
+    )}
+    
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+
+}
+
+
+///// release to maven: //////////////////////////////////////////////
+
+signing {
+  sign configurations.archives
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            customizePom(pom)
+            groupId 'com.github.appthings'
+            artifactId 'topseed4j'
+            version vversion
+
+            from components.java
+
+
+            // create the sign pom artifact
+            pom.withXml {
+                def pomFile = file("${project.buildDir}/generated-pom.xml")
+                writeTo(pomFile)
+                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+                artifact(pomAscFile) {
+                    classifier = null
+                    extension = 'pom.asc'
+                }
+            }
+
+      // create the signed artifacts
+            project.tasks.signArchives.signatureFiles.each {
+                artifact(it) {
+                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                    if (matcher.find()) {
+                        classifier = matcher.group(1)
+                    } else {
+                        classifier = null
+                    }
+                    extension = 'jar.asc'
+                }
+            }
+
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+
+    }
+}
+
+
+def customizePom(pom) {
+    pom.withXml {
+        def root = asNode()
+
+        // eliminate test-scoped dependencies (no need in maven central POMs)
+        root.dependencies.removeAll { dep ->
+            dep.scope == "test"
+        }
+
+        // add all items necessary for maven central publication
+        root.children().last() + {
+            resolveStrategy = Closure.DELEGATE_FIRST
+
+            description 'topseed4j'
+            name 'topseed4j'
+            url 'https://github.com/appthings/topseed4j'
+            organization {
+                name 'com.github.appthings'
+                url 'https://github.com/appthings/topseed4j'
+            }
+            issueManagement {
+                system 'GitHub'
+                url 'https://github.com/appthings/topseed4j/issues'
+            }
+            licenses {
+                license {
+                    name 'Attribution 4.0 International (CC BY 4.0)'
+                    url 'https://creativecommons.org/licenses/by/4.0'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/appthings/topseed4j'
+                connection 'scm:git:git://github.com/appthings/topseed4j.git'
+                developerConnection 'scm:git:ssh://git@github.com:appthings/topseed4j.git'
+            }
+            developers {
+                developer {
+                    name 'several'
+                }
+            }
+        }
+
+    }
+}
+
+
+model {
+  tasks.signArchives {
+        dependsOn project.tasks.buildJar
+    }
+    tasks.generatePomFileForMavenJavaPublication {
+        dependsOn project.tasks.signArchives
+        destination = file("${project.buildDir}/generated-pom.xml")
+    }
+    tasks.publishMavenJavaPublicationToMavenLocal {
+        dependsOn project.tasks.generatePomFileForMavenJavaPublication
+    }
+    tasks.publishMavenJavaPublicationToMavenRepository {
+        dependsOn project.tasks.generatePomFileForMavenJavaPublication
+    }
+
+}
+
+
+
+
+
