@@ -4,15 +4,12 @@ Likely you don't want to be here other than to glance the dependencies in lib fo
 
 Use in gradle like this:
 
-dependencies {
+			dependencies {
+				compile "com.github.appthings:topseed4j:v1.xx.XX"
+			}
+			// where xx.XX is the latest version. Maven use is similar.
 
-  compile "com.github.appthings:topseed4j:v1.xx.XX"
-
-}
-
-// where xx.XX is the latest version. Maven use is similar.
-
-Released via: https://oss.sonatype.org/#welcome with com.github.appthings
+Released: https://oss.sonatype.org/#welcome with com.github.appthings
 
 
 
