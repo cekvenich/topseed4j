@@ -1,8 +1,0 @@
-
-# SLF4J replay warning is normal when starting centralized logz.io
-
-chainPath = zcom.cmds
-# it controls the factory/chain
-defaultChainRouter = org.apache.chain.DefaultChainRouter
-
-key = MZygpewJsCpRrfOr
