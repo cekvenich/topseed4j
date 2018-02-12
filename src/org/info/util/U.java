@@ -1,11 +1,16 @@
 package org.info.util;
 
+import java.lang.ref.WeakReference;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class U {
+
+	public static final String DIR = System.getProperty("user.dir");
 
 	public static String trimStr(String s, int width) {
 		if (s.length() > width)
@@ -44,5 +49,50 @@ public class U {
 	public static List makeSyncedList() {
 		return Collections.synchronizedList(new ArrayList());
 	}// ()
+
+	public static Runtime RT = Runtime.getRuntime();
+
+	/**
+	 * Force GC
+	 *
+	 * @return
+	 */
+	public synchronized long fgc() {
+		long ramB = RT.totalMemory() - RT.freeMemory();
+
+		Object obj = new Object();
+		WeakReference<Object> wref = new WeakReference<>(obj);
+		obj = null;
+		while (wref.get() != null) {
+			try {
+				Thread.sleep(0, 1);
+			} catch (InterruptedException e) {
+			}
+			System.gc();
+		}
+		long ramA = RT.totalMemory() - RT.freeMemory();
+
+		return ramB - ramA;
+	}
+
+	protected static String _localHost;
+
+	public static synchronized String getLocalHost() {
+		if (_localHost != null)
+			return _localHost;
+
+		String h = null;
+		try {
+			final DatagramSocket socket = new DatagramSocket();
+
+			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+			h = socket.getLocalAddress().getHostAddress();
+			socket.close();
+		} catch (Throwable e) {
+			System.out.println(e.getMessage());
+		}
+		_localHost = h;
+		return _localHost;
+	}
 
 }// class

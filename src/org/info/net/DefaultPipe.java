@@ -2,6 +2,7 @@
 package org.info.net;
 
 import org.info.util.Confd;
+import org.info.util.U;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +84,7 @@ public class DefaultPipe extends ChannelInitializer<SocketChannel> {
 		b.channel(NioServerSocketChannel.class);
 
 		Channel ch = b.bind(port).sync().channel();
-		logger.info(P.getLocalHost() + " " + port);
+		logger.info(U.getLocalHost() + " " + port);
 
 		logger.info("started");
 		ch.closeFuture().sync();

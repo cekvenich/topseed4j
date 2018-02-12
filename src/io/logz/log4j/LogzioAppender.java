@@ -15,6 +15,7 @@ import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 import org.info.util.Confd;
+import org.info.util.U;
 
 import com.google.common.base.Splitter;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -35,7 +36,7 @@ public class LogzioAppender extends AppenderSkeleton {
 
 		System.setProperty("sun.net.spi.nameservice.nameservers", "8.8.8.8");
 		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
-		System.setProperty("NAME", P.getLocalHost());
+		System.setProperty("NAME", U.getLocalHost());
 
 		System.out.println("remote NS");
 
@@ -83,7 +84,7 @@ public class LogzioAppender extends AppenderSkeleton {
 
 		if (addHostname) {
 
-			String hostname = P.getLocalHost(); // XXX
+			String hostname = U.getLocalHost(); // XXX
 			additionalFieldsMap.put("hostname", hostname);
 		}
 

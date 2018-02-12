@@ -3,9 +3,6 @@ package org.info.util;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
-import java.lang.ref.WeakReference;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -155,51 +152,6 @@ public enum Confd implements IDaemon {
 	public String getPID() {
 		String pid = ManagementFactory.getRuntimeMXBean().getName();
 		return pid;
-	}
-
-	protected static String _localHost;
-
-	public static synchronized String getLocalHost() {
-		if (_localHost != null)
-			return _localHost;
-
-		String h = null;
-		try {
-			final DatagramSocket socket = new DatagramSocket();
-
-			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-			h = socket.getLocalAddress().getHostAddress();
-			socket.close();
-		} catch (Throwable e) {
-			System.out.println(e.getMessage());
-		}
-		_localHost = h;
-		return _localHost;
-	}
-
-	public static Runtime RT = Runtime.getRuntime();
-
-	/**
-	 * Force GC
-	 *
-	 * @return
-	 */
-	public synchronized long fgc() {
-		long ramB = RT.totalMemory() - RT.freeMemory();
-
-		Object obj = new Object();
-		WeakReference<Object> wref = new WeakReference<>(obj);
-		obj = null;
-		while (wref.get() != null) {
-			try {
-				Thread.sleep(0, 1);
-			} catch (InterruptedException e) {
-			}
-			System.gc();
-		}
-		long ramA = RT.totalMemory() - RT.freeMemory();
-
-		return ramB - ramA;
 	}
 
 	/**
