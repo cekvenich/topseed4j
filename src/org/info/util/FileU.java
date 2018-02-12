@@ -2,6 +2,7 @@ package org.info.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
@@ -97,5 +99,16 @@ public class FileU {
 			logger.info(e.getMessage());
 		}
 	}// ()
+
+	public static String show(File f) throws FileNotFoundException {
+		Scanner fileIn = new Scanner(f);
+		StringBuilder ret = new StringBuilder();
+		while (fileIn.hasNext()) {
+			String s = fileIn.nextLine();
+			ret.append(s);
+		}
+		fileIn.close();
+		return ret.toString();
+	}
 
 }// class

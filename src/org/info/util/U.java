@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class U {
@@ -93,6 +94,15 @@ public class U {
 		}
 		_localHost = h;
 		return _localHost;
+	}
+
+	public static String show(Iterator<String> itr) {
+		StringBuilder ret = new StringBuilder();
+		while (itr.hasNext()) {
+			String s = itr.next();
+			ret.append(s + " ");
+		}
+		return ret.toString();
 	}
 
 }// class
