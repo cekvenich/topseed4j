@@ -18,7 +18,7 @@ public class BasicChainFac extends ChainBase {
 
 	private final static Logger logger = LoggerFactory.getLogger(BasicChainFac.class);
 
-	public static ICmd _instPath(String path, String path2) throws Throwable {
+	public static ICmd _instCmd(String path, String path2) throws Throwable {
 		Class<?> clazz = Class.forName(path.trim() + "." + path2.trim());
 		ICmd inst = (ICmd) clazz.newInstance();
 		logger.info(inst.getName());
@@ -31,8 +31,7 @@ public class BasicChainFac extends ChainBase {
 	 * Makes a new chain.
 	 */
 	public BasicChainFac(ICmd preCmd, String root, String path2) throws Throwable {
-		String path1 = P.getConf(root);// get from config
-		ICmd cmd = _instPath(path1, path2 + CMD);
+		ICmd cmd = _instCmd(root, path2 + CMD);
 		this.addCommand(preCmd);
 		this.addCommand(cmd);
 	}

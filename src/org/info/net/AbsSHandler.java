@@ -26,7 +26,7 @@ public abstract class AbsSHandler extends ChannelInboundHandlerAdapter {
 			final FullHttpRequest req = (FullHttpRequest) msg;
 
 			domain = NetU.getHost(req);
-			logger.info(domain);
+			logger.debug(domain);
 
 			try {
 				FullHttpMessage resp = handle(req, domain);

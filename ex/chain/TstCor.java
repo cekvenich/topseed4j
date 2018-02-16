@@ -36,7 +36,7 @@ public class TstCor {
 	 * 
 	If you want to make a chain class via String
 	 */
-	public static AbsNRouter _inst(String path) throws Throwable {
+	public static AbsNRouter _instChain(String path) throws Throwable {
 		Class<?> clazz = Class.forName(path.trim());
 		AbsNRouter inst = (AbsNRouter) clazz.newInstance();
 		logger.info(inst.getClass().getName());

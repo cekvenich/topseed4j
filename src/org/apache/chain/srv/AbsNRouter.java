@@ -71,7 +71,7 @@ public abstract class AbsNRouter extends AbsSHandler {
 			try {
 				addNewChain(path);
 			} catch (Throwable e) {
-				logger.warn("nroute", e);
+				logger.warn("nroute", e.getMessage() + path);
 				FullHttpMessage resp = NetU.makeEMsg("path not found " + e.getMessage(), HttpResponseStatus.BAD_REQUEST);
 				return resp;
 			}

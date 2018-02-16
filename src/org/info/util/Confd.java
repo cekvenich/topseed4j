@@ -43,9 +43,12 @@ public enum Confd implements IDaemon {
 	@Override
 	public void _start() {
 		try {
+			logger.info(Confd.class.getPackage().getImplementationVersion().toString());
+		} catch (Exception e) {// skip error, only for jar
+		}
+		try {
 			run();
-			logger.info("i", getConf());
-			logger.info(Confd.class.getPackage().getImplementationVersion());
+			logger.info(getConf().toString());
 
 			// setDaemon
 			_esd.scheduleWithFixedDelay(this, TIME, TIME, TimeUnit.SECONDS);

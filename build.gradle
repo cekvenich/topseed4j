@@ -29,7 +29,7 @@ repositories {
 }
 
 def jarName = "topseed4j.jar"
-def vversion =  'v1.02.10'
+def vversion =  'v1.02.16'
 
 task cleanUp() {
   println 'clean build'

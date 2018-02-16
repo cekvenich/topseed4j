@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.info.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javolution.util.FastTable;
 
