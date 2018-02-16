@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ *
  * Plugs into netty
  *
  */
@@ -15,16 +15,10 @@ public class ChainPipe extends DefaultPipe {
 
 	static AbsNRouter _ch;
 
-	public ChainPipe(String router) throws Throwable {
+	public ChainPipe(AbsNRouter router) throws Throwable {
 
-		_ch = _instPath(router);
+		_ch = router;
 		handler(_ch);
 	}// ()
 
-	public static AbsNRouter _instPath(String path) throws Throwable {
-		Class<?> clazz = Class.forName(path.trim());
-		AbsNRouter inst = (AbsNRouter) clazz.newInstance();
-		logger.info(inst.getClass().getName());
-		return inst;
-	}
 }// class

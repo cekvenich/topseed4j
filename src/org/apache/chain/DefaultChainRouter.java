@@ -18,6 +18,10 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 @Sharable
 public class DefaultChainRouter extends AbsNRouter {
 
+	public DefaultChainRouter(String cmdRoot) {
+		super(cmdRoot);
+	}
+
 	private final static Logger logger = LoggerFactory.getLogger(DefaultChainRouter.class);
 
 	/**
@@ -26,7 +30,7 @@ public class DefaultChainRouter extends AbsNRouter {
 	 */
 	@Override
 	protected void addNewChain(String path) throws Throwable {
-		BasicChainFac chain = new BasicChainFac(path);
+		BasicChainFac chain = new BasicChainFac(_cmdRoot, path);
 		_chainRoutes.put(path, chain);
 	}
 

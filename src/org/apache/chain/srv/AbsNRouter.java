@@ -30,6 +30,12 @@ public abstract class AbsNRouter extends AbsSHandler {
 
 	private final static Logger logger = LoggerFactory.getLogger(AbsNRouter.class);
 
+	protected String _cmdRoot;
+
+	public AbsNRouter(String cmdRoot) {
+		_cmdRoot = cmdRoot;
+	}
+
 	/**
 	 * Stores each route
 	 */
@@ -64,8 +70,7 @@ public abstract class AbsNRouter extends AbsSHandler {
 				addNewChain(path);
 			} catch (Throwable e) {
 				logger.warn("nroute", e);
-				FullHttpMessage resp = NetU.makeEMsg("path not found " + e.getMessage(),
-						HttpResponseStatus.BAD_REQUEST);
+				FullHttpMessage resp = NetU.makeEMsg("path not found " + e.getMessage(), HttpResponseStatus.BAD_REQUEST);
 				return resp;
 			}
 		}
