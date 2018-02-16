@@ -31,9 +31,11 @@ public abstract class AbsNRouter extends AbsSHandler {
 	private final static Logger logger = LoggerFactory.getLogger(AbsNRouter.class);
 
 	protected String _cmdRoot;
+	protected ICmd _preCmd;
 
-	public AbsNRouter(String cmdRoot) {
+	public AbsNRouter(String cmdRoot, ICmd preCmd) {
 		_cmdRoot = cmdRoot;
+		_preCmd = preCmd;
 	}
 
 	/**

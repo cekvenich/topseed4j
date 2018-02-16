@@ -25,17 +25,15 @@ public class BasicChainFac extends ChainBase {
 		return inst;
 	}
 
-	private DefaultPreCmd _pre = new DefaultPreCmd();// shared
-
 	public static final String CMD = "Cmd";
 
 	/**
 	 * Makes a new chain.
 	 */
-	public BasicChainFac(String root, String path2) throws Throwable {
+	public BasicChainFac(ICmd preCmd, String root, String path2) throws Throwable {
 		String path1 = P.getConf(root);// get from config
 		ICmd cmd = _instPath(path1, path2 + CMD);
-		this.addCommand(_pre);
+		this.addCommand(preCmd);
 		this.addCommand(cmd);
 	}
 

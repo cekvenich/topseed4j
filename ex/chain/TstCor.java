@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import zcom.cmds.DefaultPreCmd;
 
 /**
  *
@@ -24,9 +25,9 @@ public class TstCor {
 
 	public static void main(String[] args) throws Throwable {
 
-		//public static final String CHAIN_PATH = "cmdRoot";
+		AbsNRouter chain = new DefaultChainRouter("zcom.cmds", new DefaultPreCmd());
 
-		new ChainPipe(new DefaultChainRouter("zcom.cmds")).srvBoot(8081, _eg);
+		new ChainPipe(chain).srvBoot(8081, _eg);
 
 		// now open http://localhost:8081/Blank
 	}
