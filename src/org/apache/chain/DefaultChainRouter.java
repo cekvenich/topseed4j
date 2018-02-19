@@ -21,7 +21,7 @@ public class DefaultChainRouter extends AbsNRouter {
 
 	/**
 	
-	 * @param cmdRoot Where are commands
+	 * @param cmdRoot Where/what folder are commands
 	 * @param preCmd What is the first command/filter
 	 */
 	public DefaultChainRouter(String cmdRoot, ICmd preCmd) {

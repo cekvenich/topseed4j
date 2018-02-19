@@ -3,29 +3,34 @@ package org.info.rpc;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class J {
+	static JSONParser _parser = new JSONParser();
 
-	static Gson GSON = new Gson();
-
-	public static String listToJSON(List ls) {
-		return GSON.toJson(ls);
+	String toJ(List lst) {
+		JSONArray list = new JSONArray();
+		list.addAll(lst);
+		return list.toJSONString();
 	}
 
-	public static List jsonToList(String js) {
-		return GSON.fromJson(js, List.class);
+	String toJ(Map m) {
+		JSONObject obj = new JSONObject();
+		obj.putAll(m);
+		return obj.toJSONString();
 	}
 
-	public static String mapToJSON(Map info) {
-		return GSON.toJson(info);
+	Map toMap(String j) throws ParseException {
+		Object obj = _parser.parse(j);
+		return (JSONObject) obj;
 	}
 
-	public static Map jsonToMap(String js) {
-		return GSON.fromJson(js, Map.class);
-	}// ()
-
-	public static int double2Int(Object d) throws Throwable {
-		return Double.valueOf(d.toString()).intValue();
+	List toLst(String j) throws ParseException {
+		Object obj = _parser.parse(j);
+		return (JSONArray) obj;
 	}
+
 }// class
