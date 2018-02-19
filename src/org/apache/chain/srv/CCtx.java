@@ -1,6 +1,14 @@
 package org.apache.chain.srv;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.chain.impl.ContextBase;
+import org.info.rpc.H;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -12,6 +20,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
  *
  */
 public class CCtx extends ContextBase {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContextBase.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +36,21 @@ public class CCtx extends ContextBase {
 
 	public CCtx(FullHttpRequest req) {
 		_req = req;
+	}
+
+	public URI URI() throws URISyntaxException {
+		URI uri = new URI(httpRequest().uri());
+		return uri;
+	}
+
+	public Map getQS() {
+		try {
+			Map qs = H.getQS(URI().toString());
+			return qs;
+		} catch (URISyntaxException e) {
+			LOGGER.warn(e.getMessage());
+			return new HashMap();
+		}
 	}
 
 	public FullHttpRequest httpRequest() {

@@ -15,6 +15,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.net.URLEncodedUtils;
 
 public class H {
+
 	public static Map<String, String> getQS(final String uri_) {
 		if (!uri_.contains("?"))
 			return null;

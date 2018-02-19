@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
 public class EMsg {
+	public static final String ERROR = "_ERROR";
 
 	public static final String NPE = "NPE";
 	protected String _error;

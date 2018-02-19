@@ -12,7 +12,7 @@ public interface ICmd extends Command {
 	/**
 	 * return false to continue
 	 */
-	boolean exec(CCtx ctx) throws Exception;
+	boolean exec(CCtx ctx);
 
 	/**
 	 * return false to continue. Don't change this method

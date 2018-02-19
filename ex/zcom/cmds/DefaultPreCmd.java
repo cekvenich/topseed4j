@@ -22,7 +22,7 @@ public class DefaultPreCmd implements ICmd {
 	 * return true to stop
 	 */
 	@Override
-	public boolean exec(CCtx ctx) throws Exception {
+	public boolean exec(CCtx ctx) {
 		logger.info("oh hi");
 		return false;
 	}

@@ -1,8 +1,12 @@
-package zcom.cmds;
+package org.apache.chain;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.chain.srv.CCtx;
-import org.apache.chain.srv.ICmd;
 import org.info.net.NetU;
+import org.info.rpc.EMsg;
+import org.info.rpc.J;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -10,19 +14,16 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 
-public class BlankCmd implements ICmd {
+public class AbsCMD {
 
-	@Override
-	public boolean exec(CCtx ctx) {
-		ctx.httpRequest(); // here is the request
-
-		// make a response
-		ByteBuf body = NetU.stringToBy("some body");
+	public boolean retError(String err, CCtx ctx) {
+		Map ret = new HashMap();
+		ret.put(EMsg.ERROR, err);
+		String j = J.toJ(ret);
+		ByteBuf body = NetU.stringToBy(j);
 		FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, body);
-
-		// return
 		ctx.httpResponse(resp);
-		return false;
-	}
+		return true; //done
 
+	}
 }
