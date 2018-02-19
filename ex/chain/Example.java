@@ -16,12 +16,12 @@ import zcom.cmds.DefaultPreCmd;
  * http://commons.apache.org/proper/commons-chain/cookbook.html
  *
  */
-public class TstCor {
+public class Example {
 	static Confd P = Confd.INSTANCE;
 
-	private final static Logger logger = LoggerFactory.getLogger(TstCor.class);
+	private final static Logger logger = LoggerFactory.getLogger(Example.class);
 
-	public static EventLoopGroup _eg = new NioEventLoopGroup(200);
+	protected static EventLoopGroup _eg = new NioEventLoopGroup(200);
 
 	public static void main(String[] args) throws Throwable {
 
