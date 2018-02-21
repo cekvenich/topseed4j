@@ -22,6 +22,9 @@ public class AbsCMD {
 		String j = J.toJ(ret);
 		ByteBuf body = NetU.stringToBy(j);
 		FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, body);
+
+		resp.headers().add("Access-Control-Allow-Origin", "*");
+
 		ctx.httpResponse(resp);
 		return true; //done
 

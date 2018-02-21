@@ -79,6 +79,9 @@ public abstract class AbsNRouter extends AbsSHandler {
 		BasicChainFac chain = _chainRoutes.get(path);
 		chain.execute(ctx);
 
+		ctx.httpResponse().headers().set(HttpHeaders.Names.CONTENT_TYPE, "application/json");
+		ctx.httpResponse().headers().set(HttpHeaders.Names.CONTENT_LENGTH, ctx.httpResponse().content().readableBytes());
+
 		return ctx.httpResponse();
 	}
 
