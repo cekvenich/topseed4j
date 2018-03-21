@@ -16,6 +16,8 @@
 !**/*.java
 
 !build.gradle
+!gradle.properties
+
 !conf.props
 
 
@@ -24,3 +26,4 @@
 **/Thumbs.db
 
 
+/bin/
