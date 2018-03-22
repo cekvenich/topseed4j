@@ -12,6 +12,8 @@ import java.util.List;
 public class U {
 
 	public static final String DIR = System.getProperty("user.dir");
+	public static Runtime RT = Runtime.getRuntime();
+	protected static String _localHost;
 
 	public static String trimStr(String s, int width) {
 		if (s.length() > width)
@@ -51,33 +53,6 @@ public class U {
 		return Collections.synchronizedList(new ArrayList());
 	}// ()
 
-	public static Runtime RT = Runtime.getRuntime();
-
-	/**
-	 * Force GC
-	 *
-	 * @return
-	 */
-	public synchronized long fgc() {
-		long ramB = RT.totalMemory() - RT.freeMemory();
-
-		Object obj = new Object();
-		WeakReference<Object> wref = new WeakReference<>(obj);
-		obj = null;
-		while (wref.get() != null) {
-			try {
-				Thread.sleep(0, 1);
-			} catch (InterruptedException e) {
-			}
-			System.gc();
-		}
-		long ramA = RT.totalMemory() - RT.freeMemory();
-
-		return ramB - ramA;
-	}
-
-	protected static String _localHost;
-
 	public static synchronized String getLocalHost() {
 		if (_localHost != null)
 			return _localHost;
@@ -103,6 +78,29 @@ public class U {
 			ret.append(s + " ");
 		}
 		return ret.toString();
+	}
+
+	/**
+	 * Force GC
+	 *
+	 * @return
+	 */
+	public synchronized long fgc() {
+		long ramB = RT.totalMemory() - RT.freeMemory();
+
+		Object obj = new Object();
+		WeakReference<Object> wref = new WeakReference<>(obj);
+		obj = null;
+		while (wref.get() != null) {
+			try {
+				Thread.sleep(0, 1);
+			} catch (InterruptedException e) {
+			}
+			System.gc();
+		}
+		long ramA = RT.totalMemory() - RT.freeMemory();
+
+		return ramB - ramA;
 	}
 
 }// class

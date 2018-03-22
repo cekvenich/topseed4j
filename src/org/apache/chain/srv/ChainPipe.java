@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * Plugs into netty
- *
  */
 public class ChainPipe extends DefaultPipe {
 

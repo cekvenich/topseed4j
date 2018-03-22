@@ -9,23 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * Loads command from classpath and makes a chain
- *
  */
 public class BasicChainFac extends ChainBase {
-	static Confd P = Confd.INSTANCE;
-
-	private final static Logger logger = LoggerFactory.getLogger(BasicChainFac.class);
-
-	public static ICmd _instCmd(String path, String path2) throws Throwable {
-		Class<?> clazz = Class.forName(path.trim() + "." + path2.trim());
-		ICmd inst = (ICmd) clazz.newInstance();
-		logger.info(inst.getName());
-		return inst;
-	}
-
 	public static final String CMD = "Cmd";
+	private final static Logger logger = LoggerFactory.getLogger(BasicChainFac.class);
+	static Confd P = Confd.INSTANCE;
 
 	/**
 	 * Makes a new chain.
@@ -34,6 +23,13 @@ public class BasicChainFac extends ChainBase {
 		ICmd cmd = _instCmd(root, path2 + CMD);
 		this.addCommand(preCmd);
 		this.addCommand(cmd);
+	}
+
+	public static ICmd _instCmd(String path, String path2) throws Throwable {
+		Class<?> clazz = Class.forName(path.trim() + "." + path2.trim());
+		ICmd inst = (ICmd) clazz.newInstance();
+		logger.info(inst.getName());
+		return inst;
 	}
 
 	/**

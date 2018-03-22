@@ -1,10 +1,5 @@
 package org.apache.bro;
 
-import java.net.InetAddress;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hc.client5.http.SystemDefaultDnsResolver;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
@@ -16,14 +11,25 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BrowU {
+
+	public static final String VIDEO = "video";
+	public static final String IMG = "img";
+	public static final String SRC = "src";
+	public static final String STYLE = "style";
+	public static final String SCRIPT = "script";
+	public static final String LINK = "link";
+	static SystemDefaultDnsResolver _dns = new SystemDefaultDnsResolver();
 
 	public static InetAddress lookup(String domain) throws Throwable {
 		InetAddress address = InetAddress.getByName(domain);
 		return address;
 	}// ()
-
-	static SystemDefaultDnsResolver _dns = new SystemDefaultDnsResolver();
 
 	public static InetAddress getHostIP2(URL url) throws Throwable {
 		InetAddress[] ips = _dns.resolve(url.getHost());
@@ -38,7 +44,6 @@ public class BrowU {
 	}
 
 	/**
-	 *
 	 * Return String or ba[]
 	 */
 	public static Object get(URL url, boolean isString) throws Throwable {
@@ -61,13 +66,6 @@ public class BrowU {
 			client.close();
 		}
 	}// ()
-
-	public static final String VIDEO = "video";
-	public static final String IMG = "img";
-	public static final String SRC = "src";
-	public static final String STYLE = "style";
-	public static final String SCRIPT = "script";
-	public static final String LINK = "link";
 
 	public List<Element> accessJS(Element doc) {
 		List<Element> lst = new ArrayList();

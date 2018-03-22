@@ -1,15 +1,11 @@
 package io.logz.log4j;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
+import com.google.common.base.Splitter;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import io.logz.sender.LogzioSender;
+import io.logz.sender.SenderStatusReporter;
+import io.logz.sender.com.google.gson.JsonObject;
+import io.logz.sender.exceptions.LogzioParameterErrorException;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
@@ -17,19 +13,24 @@ import org.apache.log4j.spi.ThrowableInformation;
 import org.info.util.Confd;
 import org.info.util.U;
 
-import com.google.common.base.Splitter;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
-import io.logz.sender.LogzioSender;
-import io.logz.sender.SenderStatusReporter;
-import io.logz.sender.com.google.gson.JsonObject;
-import io.logz.sender.exceptions.LogzioParameterErrorException;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author MarinaRazumovsky
  */
 
 public class LogzioAppender extends AppenderSkeleton {
+	private static final String TIMESTAMP = "@timestamp";
+	private static final String LOGLEVEL = "loglevel";
+	private static final String MESSAGE = "message";
+	private static final String LOGGER = "logger";
+	private static final String THREAD = "thread";
+	private static final String EXCEPTION = "exception";
+	private static final Set<String> reservedFields = new HashSet<>(
+		Arrays.asList(new String[]{TIMESTAMP, LOGLEVEL, MESSAGE, LOGGER, THREAD, EXCEPTION}));
 	static Confd P = Confd.INSTANCE;
 
 	static {/// XXX
@@ -41,16 +42,6 @@ public class LogzioAppender extends AppenderSkeleton {
 		System.out.println("remote NS");
 
 	}
-
-	private static final String TIMESTAMP = "@timestamp";
-	private static final String LOGLEVEL = "loglevel";
-	private static final String MESSAGE = "message";
-	private static final String LOGGER = "logger";
-	private static final String THREAD = "thread";
-	private static final String EXCEPTION = "exception";
-
-	private static final Set<String> reservedFields = new HashSet<>(
-			Arrays.asList(new String[] { TIMESTAMP, LOGLEVEL, MESSAGE, LOGGER, THREAD, EXCEPTION }));
 
 	private ScheduledExecutorService scheduledExecutorService;
 	private LogzioSender logzioSender;
@@ -108,10 +99,10 @@ public class LogzioAppender extends AppenderSkeleton {
 
 		try {
 			scheduledExecutorService = Executors.newScheduledThreadPool(2,
-					new ThreadFactoryBuilder().setDaemon(true).build());
+				new ThreadFactoryBuilder().setDaemon(true).build());
 			logzioSender = LogzioSender.getOrCreateSenderByType(logzioToken, logzioType, drainTimeoutSec,
-					fileSystemFullPercentThreshold, bufferDirFile, logzioUrl, socketTimeout, connectTimeout, debug,
-					new StatusReporter(), scheduledExecutorService, gcPersistedQueueFilesIntervalSeconds);
+				fileSystemFullPercentThreshold, bufferDirFile, logzioUrl, socketTimeout, connectTimeout, debug,
+				new StatusReporter(), scheduledExecutorService, gcPersistedQueueFilesIntervalSeconds);
 			logzioSender.start();
 		} catch (LogzioParameterErrorException e) {
 			LogLog.error("Some of the configuration parameters of logz.io is wrong: " + e.getMessage(), e);
@@ -231,7 +222,7 @@ public class LogzioAppender extends AppenderSkeleton {
 			Splitter.on(';').omitEmptyStrings().withKeyValueSeparator('=').split(additionalFields).forEach((k, v) -> {
 				if (reservedFields.contains(k)) {
 					LogLog.warn("The field name '" + k
-							+ "' defined in additionalFields configuration can't be used since it's a reserved field name. This field will not be added to the outgoing log messages");
+						+ "' defined in additionalFields configuration can't be used since it's a reserved field name. This field will not be added to the outgoing log messages");
 				} else {
 					String value = getValueFromSystemEnvironmentIfNeeded(v);
 					if (value != null) {

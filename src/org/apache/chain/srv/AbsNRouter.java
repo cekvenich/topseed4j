@@ -1,17 +1,5 @@
 package org.apache.chain.srv;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.chain.BasicChainFac;
-import org.info.net.AbsSHandler;
-import org.info.net.NetU;
-import org.info.rpc.H;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -19,11 +7,20 @@ import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.chain.BasicChainFac;
+import org.info.net.AbsSHandler;
+import org.info.net.NetU;
+import org.info.rpc.H;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
  * Able to handle chain | cmd plugins
- *
  */
 @Sharable
 public abstract class AbsNRouter extends AbsSHandler {
@@ -32,18 +29,26 @@ public abstract class AbsNRouter extends AbsSHandler {
 
 	protected String _cmdRoot;
 	protected ICmd _preCmd;
+	/**
+	 * Stores each route
+	 */
+	protected Map<String, BasicChainFac> _chainRoutes = new ConcurrentHashMap();
+	protected String INDEX = "index";
 
 	public AbsNRouter(String cmdRoot, ICmd preCmd) {
 		_cmdRoot = cmdRoot;
 		_preCmd = preCmd;
 	}
 
-	/**
-	 * Stores each route
-	 */
-	protected Map<String, BasicChainFac> _chainRoutes = new ConcurrentHashMap();
+	public static ByteBuf toStringBody(String path) throws Throwable {
+		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
+		return NetU.stringToBy(str);
+	}
 
-	protected String INDEX = "index";
+	public static ByteBuf toByteArrayBody(String path) throws Throwable {
+		byte[] ba = Files.readAllBytes(Paths.get(path));
+		return Unpooled.wrappedBuffer(ba);
+	}
 
 	/**
 	 * Netty comes here
@@ -88,18 +93,7 @@ public abstract class AbsNRouter extends AbsSHandler {
 	protected abstract FullHttpMessage resource(FullHttpRequest req, String path);
 
 	/**
-	 *
 	 * If you need a different factory, override this.
 	 */
 	protected abstract void addNewChain(String path) throws Throwable;
-
-	public static ByteBuf toStringBody(String path) throws Throwable {
-		String str = new String(Files.readAllBytes(Paths.get(path)), "UTF-8");
-		return NetU.stringToBy(str);
-	}
-
-	public static ByteBuf toByteArrayBody(String path) throws Throwable {
-		byte[] ba = Files.readAllBytes(Paths.get(path));
-		return Unpooled.wrappedBuffer(ba);
-	}
 }

@@ -1,20 +1,20 @@
 package org.apache.bro;
 
+import javafx.util.Pair;
+import javolution.util.FastTable;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-
-import javafx.util.Pair;
-import javolution.util.FastTable;
-
 public abstract class AbsBrowserExecutor {
 
 	protected ThreadPoolExecutor _execs;
 	protected LinkedBlockingQueue _q = new LinkedBlockingQueue<Callable>();// unbounded task list
 	protected List<Future<Pair>> _results = new FastTable();
+	private long _lastCompleted = 0;
 
 	/**
 	 * It starts with 1
@@ -38,8 +38,6 @@ public abstract class AbsBrowserExecutor {
 	public long getComplemetedCount() {
 		return _execs.getCompletedTaskCount();
 	}
-
-	private long _lastCompleted = 0;
 
 	/**
 	 * How much did we get done since last call

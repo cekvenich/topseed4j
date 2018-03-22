@@ -1,19 +1,20 @@
 package org.apache.da.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.apache.da.DefaultPoolConfig;
 import org.apache.da.AbsFactPool;
+import org.apache.da.DefaultPoolConfig;
 import org.info.util.Confd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 public class H2DBFac1 extends AbsFactPool {
 	private static final Logger logger = LoggerFactory.getLogger(H2DBFac1.class);
+	static Confd P = Confd.INSTANCE;
 
 	static {
 		try {
@@ -23,8 +24,6 @@ public class H2DBFac1 extends AbsFactPool {
 			System.exit(1);
 		}
 	}// s
-
-	static Confd P = Confd.INSTANCE;
 
 	@Override
 	public GenericObjectPoolConfig returnPoolConfig() {

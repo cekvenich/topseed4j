@@ -1,12 +1,5 @@
 package org.apache.da;
 
-import java.sql.Connection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.commons.dbutils.AsyncQueryRunner;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.StatementConfiguration;
@@ -15,38 +8,41 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.info.util.Confd;
 import org.info.util.U;
 
+import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Data base access
  */
 public enum BaseDA {
 	INSTANCE;
 
+	static Confd P = Confd.INSTANCE;
+	static StatementConfiguration config = null;
+	// is HA: to replicate writes to a read
+	// db.
+	// Or different priorities. Or failover
+	// implementations.
+	/**
+	 * Could be configured as to timeout and max rows.
+	 */
+	static QueryRunner _run = new QueryRunner();
+	static ExecutorService _es = Executors.newSingleThreadExecutor(); // for fastest async writes
+	static AsyncQueryRunner _frun = new AsyncQueryRunner(_es);
 	/**
 	 * Pool
 	 */
 	public GenericObjectPool<Connection> DBConPool1; // pool1, ex reads
 	public GenericObjectPool<Connection> DBConPool2; // pool2, ex writes. One use
-	// is HA: to replicate writes to a read
-	// db.
-	// Or different priorities. Or failover
-	// implementations.
-
 	/**
 	 * Register your comp *instances* here that may need cache to be invalidated
 	 * from some other comp instances.
 	 */
 	public List<AbsCompDA> COMPS_REG = U.makeSyncedList();
-
-	static Confd P = Confd.INSTANCE;
-
-	static StatementConfiguration config = null;
-	/**
-	 * Could be configured as to timeout and max rows.
-	 */
-	static QueryRunner _run = new QueryRunner();
-
-	static ExecutorService _es = Executors.newSingleThreadExecutor(); // for fastest async writes
-	static AsyncQueryRunner _frun = new AsyncQueryRunner(_es);
 
 	/**
 	 * You must setup the pool before using DA
@@ -99,7 +95,7 @@ public enum BaseDA {
 				List<Map<String, Object>> res1 = res.get(0);// # of returns
 				if (res1.size() > 0) {// rows
 					TreeMap<String, Object> row = new TreeMap(String.CASE_INSENSITIVE_ORDER); // make it case
-																								// Insensitive key
+					// Insensitive key
 					row.putAll(res1.get(0));// just the first row;
 					return row;
 				}
@@ -167,8 +163,7 @@ public enum BaseDA {
 	/**
 	 * Fastest CRUD writer due to single async thread.
 	 *
-	 * @param con
-	 *            Should be a single connection you keep and never close dedicated
+	 * @param con Should be a single connection you keep and never close dedicated
 	 *            to fast writer. TODO: Make that single connection local to this
 	 *            class.
 	 */

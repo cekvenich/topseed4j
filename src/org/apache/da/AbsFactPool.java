@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Factory No op. implemented
- *
  */
 public abstract class AbsFactPool implements PooledObjectFactory {
 

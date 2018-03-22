@@ -1,24 +1,23 @@
 package org.info.rpc;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
-import org.info.net.NetU;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import org.info.net.NetU;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class EMsg {
 	public static final String ERROR = "_ERROR";
 
 	public static final String NPE = "NPE";
+	public Map headers;// can be used to send headers, ex: auth related
 	protected String _error;
 	protected byte[] resp;
-	public Map headers;// can be used to send headers, ex: auth related
 
 	public EMsg error(String er) throws Error {
 		if (er == null || er.length() < 1)
@@ -64,7 +63,6 @@ public class EMsg {
 	}
 
 	/**
-	 *
 	 * @return no error
 	 */
 	public boolean ok() {
@@ -76,7 +74,7 @@ public class EMsg {
 	public EMsg bool(Boolean r) throws Throwable {
 		if (r == null)
 			throw new Throwable(NPE);
-		resp = new byte[] { (byte) (r ? 1 : 0) };
+		resp = new byte[]{(byte) (r ? 1 : 0)};
 		return this;
 	}
 

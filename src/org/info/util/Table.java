@@ -1,12 +1,8 @@
 package org.info.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javolution.util.FastTable;
+
+import java.util.*;
 
 public class Table extends FastTable<Map<String, Object>> {
 
@@ -19,6 +15,15 @@ public class Table extends FastTable<Map<String, Object>> {
 	public Table(Table old) {
 		super();
 		_addAll(old);
+	}
+
+	public static int addUpColumnValues(List<Map<String, Object>> subSet, String col) {
+		int total = 0;
+		for (Map row : subSet) {
+			int value = (Integer) row.get(col);
+			total += value;
+		}
+		return total;
 	}
 
 	// concurrent add
@@ -50,15 +55,6 @@ public class Table extends FastTable<Map<String, Object>> {
 			ret.add(row);
 		}
 		return ret;
-	}
-
-	public static int addUpColumnValues(List<Map<String, Object>> subSet, String col) {
-		int total = 0;
-		for (Map row : subSet) {
-			int value = (Integer) row.get(col);
-			total += value;
-		}
-		return total;
 	}
 
 }// class

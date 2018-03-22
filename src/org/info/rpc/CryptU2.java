@@ -1,20 +1,17 @@
 package org.info.rpc;
 
-import java.nio.charset.StandardCharsets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.nio.charset.StandardCharsets;
 
 public class CryptU2 {
 
 	private static final Logger logger = LoggerFactory.getLogger(CryptU2.class);
-
-	private byte[] key;
-
 	private static final String ALGORITHM = "AES";
+	private byte[] key;
 	// String key = "MZygpewJsCpRrfOr";
 
 	public CryptU2(String pas) {

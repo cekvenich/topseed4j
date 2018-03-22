@@ -26,5 +26,7 @@ public class MimeMAP {
 		MIME_MAP.put("png", "image/png");
 		MIME_MAP.put("zip", "application/zip");
 
-	};
+	}
+
+	;
 }
