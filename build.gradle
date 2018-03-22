@@ -29,7 +29,7 @@ repositories {
 }
 
 def jarName = "topseed4j.jar"
-def vversion =  'v1.02.19'
+def vversion =  'v1.03.22'
 
 task cleanUp() {
   println 'clean build'
@@ -52,7 +52,7 @@ jar { // modify release
         attributes(
                    'Implementation-Version': vversion
     )}
-    
+
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 
 }

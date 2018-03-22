@@ -6,8 +6,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.util.Pair;
 import javolution.util.FastTable;
 
 public abstract class AbsBrowserExecutor {

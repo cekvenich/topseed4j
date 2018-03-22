@@ -75,12 +75,21 @@ public enum Confd implements IDaemon {
 
 	}
 
-	protected void reloadConf() throws Throwable {
-		InputStream input = new FileInputStream(DIR + "/" + FILE + ".props");
+
+	public static Map loadProps(String fn) throws Throwable {
+		InputStream input = new FileInputStream(fn);
 
 		Map props = new Properties();
 		((Properties) props).load(input);
 		input.close();
+		return props;
+	}
+
+
+	protected void reloadConf() throws Throwable {
+		String fn = DIR + "/" + FILE + ".props";
+
+		Map props = loadProps (fn);
 		_conf = props; // atomic
 	}
 
