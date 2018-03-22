@@ -7,7 +7,7 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.da.DefaultPoolConfig;
-import org.info.util.AbsFactPool;
+import org.apache.da.AbsFactPool;
 import org.info.util.Confd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

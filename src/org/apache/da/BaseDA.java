@@ -12,7 +12,6 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.StatementConfiguration;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.info.util.AbsFactPool;
 import org.info.util.Confd;
 import org.info.util.U;
 

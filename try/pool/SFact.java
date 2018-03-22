@@ -3,7 +3,7 @@ package pool;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.info.util.AbsFactPool;
+import org.apache.da.AbsFactPool;
 
 public class SFact extends AbsFactPool {
 
