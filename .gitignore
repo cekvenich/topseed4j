@@ -1,29 +1,3 @@
-## ban all
-*
-!*/
-
-!.gitignore
-!README.md
-## except white list to 
-# include (w/ ! prefix):
-
-
-!/src/**/*.*
-!/libs/**/*.*
-!/javadoc/**/*.*
-!/ex/**/*.*
-
-!**/*.java
-
-!build.gradle
-!gradle.properties
-
-!conf.props
-
-
-## over ride
 **/.DS_Store
-**/Thumbs.db
 
-
-/bin/
+/out/
