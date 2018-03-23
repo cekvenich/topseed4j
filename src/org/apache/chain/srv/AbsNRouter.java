@@ -55,7 +55,7 @@ public abstract class AbsNRouter extends AbsSHandler {
 	 */
 	@Override
 	protected FullHttpMessage handle(FullHttpRequest req, String domain) {
-		CCtx ctx = new CCtx(req);
+		Ctx ctx = new Ctx(req);
 
 		HttpHeaders h = req.headers();
 		String uri = req.uri();

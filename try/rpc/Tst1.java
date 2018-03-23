@@ -10,10 +10,8 @@ import org.slf4j.LoggerFactory;
 
 public class Tst1 {
 	private static final Logger logger = LoggerFactory.getLogger(Tst1.class);
-
-	static Confd P = Confd.INSTANCE;
-
 	public static int PORT = 8081;
+	static Confd P = Confd.INSTANCE;
 
 	public static void main(String[] args) throws Throwable {
 

@@ -7,9 +7,8 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-	static Confd P = Confd.INSTANCE;
-
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	static Confd P = Confd.INSTANCE;
 
 	public static void main(String[] args) throws Throwable {
 

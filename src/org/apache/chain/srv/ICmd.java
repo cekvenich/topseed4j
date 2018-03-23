@@ -12,14 +12,14 @@ public interface ICmd extends Command {
 	/**
 	 * return false to continue
 	 */
-	boolean exec(CCtx ctx);
+	boolean exec(Ctx ctx);
 
 	/**
 	 * return false to continue. Don't change this method
 	 */
 	@Override
 	public default boolean execute(Context ctx) throws Exception {
-		CCtx nctx = (CCtx) ctx;
+		Ctx nctx = (Ctx) ctx;
 		return exec(nctx);
 	}
 

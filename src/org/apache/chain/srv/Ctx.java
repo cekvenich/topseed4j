@@ -16,7 +16,7 @@ import java.util.Map;
  * A map to communicate to the chain. Chain Context. Has req/resp. Else 'put'
  * and 'get'.
  */
-public class CCtx extends ContextBase {
+public class Ctx extends ContextBase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContextBase.class);
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class CCtx extends ContextBase {
 	protected FullHttpRequest _req;
 	protected FullHttpResponse _resp;
 
-	public CCtx(FullHttpRequest req) {
+	public Ctx(FullHttpRequest req) {
 		_req = req;
 	}
 

@@ -1,6 +1,6 @@
 package org.apache.chain;
 
-import org.apache.chain.srv.CCtx;
+import org.apache.chain.srv.Ctx;
 import org.apache.chain.srv.ICmd;
 import org.apache.commons.chain.Context;
 import org.apache.commons.chain.impl.ChainBase;
@@ -38,7 +38,7 @@ public class BasicChainFac extends ChainBase {
 	@Override
 	public boolean execute(Context ctx) {
 
-		CCtx nctx = (CCtx) ctx;
+		Ctx nctx = (Ctx) ctx;
 		try {
 			return super.execute(nctx);
 		} catch (Exception e) {
