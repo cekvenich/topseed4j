@@ -39,7 +39,7 @@ public class DefaultChainRouter extends AbsNRouter {
 	 * Handle resource requests
 	 */
 	@Override
-	protected FullHttpMessage resource(FullHttpRequest req, String path) {
+	protected FullHttpMessage resource(FullHttpRequest req, String path) throws Exception {
 		FullHttpMessage resp = NetU.makeEMsg("to do", HttpResponseStatus.BAD_REQUEST);
 		return resp;
 	}

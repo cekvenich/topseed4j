@@ -25,6 +25,7 @@ public class Ctx extends ContextBase {
 	public boolean cache;
 	protected FullHttpRequest _req;
 	protected FullHttpResponse _resp;
+	protected String _mappedPath;
 
 	public Ctx(FullHttpRequest req) {
 		_req = req;
@@ -56,4 +57,14 @@ public class Ctx extends ContextBase {
 	public FullHttpResponse httpResponse() {
 		return _resp;
 	}
+	
+	public String mappedPath() {
+		return _mappedPath;
+	}
+	
+	public void mappedPath(String path) {
+		_mappedPath = path;
+	}
+	
+	
 }

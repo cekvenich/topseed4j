@@ -1,5 +1,17 @@
 package org.apache.chain.srv;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.chain.Chain;
+import org.info.net.AbsSHandler;
+import org.info.net.NetU;
+import org.info.rpc.H;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -7,17 +19,7 @@ import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.chain.BasicChainFac;
-import org.info.net.AbsSHandler;
-import org.info.net.NetU;
-import org.info.rpc.H;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import io.netty.handler.codec.http.HttpHeaderNames;
 
 /**
  * Able to handle chain | cmd plugins
@@ -32,8 +34,8 @@ public abstract class AbsNRouter extends AbsSHandler {
 	/**
 	 * Stores each route
 	 */
-	protected Map<String, BasicChainFac> _chainRoutes = new ConcurrentHashMap();
-	protected String INDEX = "index";
+	protected Map<String, Chain> _chainRoutes = new ConcurrentHashMap<String, Chain>();
+	protected String INDEX = "/index";
 
 	public AbsNRouter(String cmdRoot, ICmd preCmd) {
 		_cmdRoot = cmdRoot;
@@ -49,27 +51,49 @@ public abstract class AbsNRouter extends AbsSHandler {
 		byte[] ba = Files.readAllBytes(Paths.get(path));
 		return Unpooled.wrappedBuffer(ba);
 	}
+	
+	@Override
+	protected boolean isStaticResource(Ctx ctx, String domain) {
+		String uri = ctx._req.uri();
+		String path = H.getPath(uri);
+		return path.indexOf('.') > -1;
+	}
+	
+	
+	public String mappedPath(String path) {
+		return path;
+	}
 
 	/**
 	 * Netty comes here
 	 */
 	@Override
-	protected FullHttpMessage handle(FullHttpRequest req, String domain) {
+	protected FullHttpMessage handle(FullHttpRequest req, String domain) throws Exception {
 		Ctx ctx = new Ctx(req);
 
 		HttpHeaders h = req.headers();
 		String uri = req.uri();
+		//String path = mappedPath(H.getPath(uri));
+		
 		String path = H.getPath(uri);
 
-		if (path.indexOf('.') > -1) {// static resource, no a command
-			return resource(req, path);
+		//if (path.indexOf('.') > -1) {// static resource, no a command
+		if (isStaticResource(ctx, domain)) {
+			try {
+				return resource(req, path);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 
-		path = path.substring(1);
-		if (path.length() < 1)
+		path = mappedPath(path);
+		ctx.mappedPath(path);
+		
+		//path = path.substring(1);
+		if (path.length() < 2)
 			path = INDEX;
 
-		path = path.substring(0, 1).toUpperCase() + path.substring(1);
+		//path = path.substring(0, 1).toUpperCase() + path.substring(1);
 		logger.info(path);
 
 		if (!_chainRoutes.containsKey(path)) {
@@ -81,16 +105,16 @@ public abstract class AbsNRouter extends AbsSHandler {
 				return resp;
 			}
 		}
-		BasicChainFac chain = _chainRoutes.get(path);
+		Chain chain = _chainRoutes.get(path);
 		chain.execute(ctx);
 
-		ctx.httpResponse().headers().set(HttpHeaders.Names.CONTENT_TYPE, "application/json");
-		ctx.httpResponse().headers().set(HttpHeaders.Names.CONTENT_LENGTH, ctx.httpResponse().content().readableBytes());
+		//ctx.httpResponse().headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json");
+		ctx.httpResponse().headers().set(HttpHeaderNames.CONTENT_LENGTH, ctx.httpResponse().content().readableBytes());
 
 		return ctx.httpResponse();
 	}
 
-	protected abstract FullHttpMessage resource(FullHttpRequest req, String path);
+	protected abstract FullHttpMessage resource(FullHttpRequest req, String path) throws Throwable;
 
 	/**
 	 * If you need a different factory, override this.

@@ -25,6 +25,12 @@ public class NetU {
 		HttpUtil.setKeepAlive(resp, false);
 		return resp;
 	}
+	
+	public static FullHttpMessage makeEMsg(ByteBuf content, HttpResponseStatus code) {
+		DefaultFullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, code, content);
+		HttpUtil.setKeepAlive(resp, false);
+		return resp;
+	}
 
 	public static ByteBuf stringToBy(String str) {
 		byte[] ba = str.getBytes(StandardCharsets.UTF_8);

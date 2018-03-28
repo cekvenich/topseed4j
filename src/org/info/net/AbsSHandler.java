@@ -7,6 +7,8 @@ import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
+
+import org.apache.chain.srv.Ctx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +17,9 @@ public abstract class AbsSHandler extends ChannelInboundHandlerAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbsSHandler.class);
 
-	protected abstract FullHttpMessage handle(FullHttpRequest req, String domain);
+	protected abstract FullHttpMessage handle(FullHttpRequest req, String domain) throws Exception;
+	
+	protected abstract boolean isStaticResource(Ctx ctx, String domain);
 
 	@Override
 	public void channelRead(final ChannelHandlerContext pctx, final Object msg) {
