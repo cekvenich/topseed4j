@@ -1,16 +1,19 @@
 package org.apache.chain.srv;
 
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.chain.impl.ContextBase;
 import org.info.rpc.H;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
+import io.netty.channel.ChannelId;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
 
 /**
  * A map to communicate to the chain. Chain Context. Has req/resp. Else 'put'
@@ -25,10 +28,12 @@ public class Ctx extends ContextBase {
 	public boolean cache;
 	protected FullHttpRequest _req;
 	protected FullHttpResponse _resp;
-	protected String _mappedPath;
+	public ChannelId id;
+	
 
-	public Ctx(FullHttpRequest req) {
+	public Ctx(FullHttpRequest req, ChannelId id_) {
 		_req = req;
+		id = id_;
 	}
 
 	public URI URI() throws URISyntaxException {
@@ -58,13 +63,19 @@ public class Ctx extends ContextBase {
 		return _resp;
 	}
 	
-	public String mappedPath() {
-		return _mappedPath;
+	/**
+	 * Set response type
+	 */
+	public void setAsJson() {
+		_resp.headers().set(HttpHeaderNames.CONTENT_TYPE,"application/json");
 	}
 	
-	public void mappedPath(String path) {
-		_mappedPath = path;
+	
+	public String getPath() {
+		String uri = _req.uri();
+		String path = H.getPath(uri);
+		return path;
 	}
-	
-	
+
+
 }

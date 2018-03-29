@@ -1,8 +1,12 @@
 package org.info.util;
 
-import javolution.util.FastTable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import javolution.util.FastTable;
 
 public class Table extends FastTable<Map<String, Object>> {
 

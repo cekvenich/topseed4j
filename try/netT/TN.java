@@ -1,9 +1,10 @@
 package netT;
 
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import org.info.net.DefaultPipe;
 import org.info.util.Confd;
+
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 
 public class TN {
 	public static EventLoopGroup _eg = new NioEventLoopGroup(100);

@@ -1,23 +1,34 @@
 package org.info.rpc;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
+import java.util.Map;
+
 import org.info.net.AbsSHandler;
 import org.info.net.NetU;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
+import io.netty.handler.codec.http.FullHttpMessage;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
 
 // should be @Sharable?
+/**
+ * Due to session id, it needs fixing
+ *
+ */
+@Deprecated
 public abstract class APIServiceHandler extends AbsSHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(APIServiceHandler.class);
 
 	@Override
-	protected FullHttpMessage handle(FullHttpRequest req, String domain) {
+	protected FullHttpMessage handle(FullHttpRequest req, ChannelId id, String domain) {
 		HttpHeaders h = req.headers();
 		String uri = req.uri();
 		logger.debug(uri);
@@ -39,6 +50,7 @@ public abstract class APIServiceHandler extends AbsSHandler {
 	 */
 	public abstract EMsg _srv(String path, Map<String, String> qs, ByteBuf body, Map sheaders);
 
+	/*
 	@Override
 	public void channelRead(final ChannelHandlerContext pctx, final Object msg) {
 		String domain;
@@ -55,11 +67,10 @@ public abstract class APIServiceHandler extends AbsSHandler {
 				resp.headers().add("Connection", "close");
 
 				ChannelFuture f = pctx.writeAndFlush(resp); // to browsers
-				// f.sync();
-				/*
-				 * if (!HttpUtil.isKeepAlive(req) || !HttpUtil.isKeepAlive(resp)) {
-				 * NetU.chClose(pctx.channel()); }
-				 */
+				//
+				 // if (!HttpUtil.isKeepAlive(req) || !HttpUtil.isKeepAlive(resp)) {
+				 // NetU.chClose(pctx.channel()); }
+				 //
 				while (resp.refCnt() > 0)
 					resp.release(resp.refCnt());
 
@@ -82,4 +93,6 @@ public abstract class APIServiceHandler extends AbsSHandler {
 		} // if else
 
 	}// ()
+	
+	*/
 }

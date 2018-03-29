@@ -4,7 +4,7 @@ import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
 /**
- * Interface COR N(netty) Command. Instances are shared, there is not a new one
+ * Interface COR N(netty) Command. Command instances are shared, there is not a new one
  * pre connection or per request, so properties must be thread safe.
  */
 public interface ICmd extends Command {

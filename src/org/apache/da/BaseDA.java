@@ -1,5 +1,12 @@
 package org.apache.da;
 
+import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.commons.dbutils.AsyncQueryRunner;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.StatementConfiguration;
@@ -8,16 +15,10 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.info.util.Confd;
 import org.info.util.U;
 
-import java.sql.Connection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /**
- * Data base access
+ * Data base access. Should use lambda, BaaS, api, etc.
  */
+@Deprecated
 public enum BaseDA {
 	INSTANCE;
 
@@ -163,7 +164,8 @@ public enum BaseDA {
 	/**
 	 * Fastest CRUD writer due to single async thread.
 	 *
-	 * @param con Should be a single connection you keep and never close dedicated
+	 * @param con
+	 *            Should be a single connection you keep and never close dedicated
 	 *            to fast writer. TODO: Make that single connection local to this
 	 *            class.
 	 */

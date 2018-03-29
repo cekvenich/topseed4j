@@ -1,5 +1,7 @@
 package org.info.rpc;
 
+import java.util.Map;
+
 import org.apache.hc.client5.http.HttpRoute;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.config.RequestConfig;
@@ -16,8 +18,6 @@ import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
  * Consider singleton manager
  */
@@ -30,7 +30,7 @@ public class BasicCli {
 	// Create socket configuration
 	protected SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).build();
 	protected RequestConfig _requestConfig = RequestConfig.custom().setConnectionRequestTimeout(Timeout.ofSeconds(1))
-		.build();
+			.build();
 	protected String _ep;
 
 	public BasicCli(String ep, int port) {
@@ -61,7 +61,7 @@ public class BasicCli {
 
 		// Create an HttpClient with the given custom dependencies and configuration.
 		CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(_connManager)
-			.setDefaultRequestConfig(_requestConfig).build();
+				.setDefaultRequestConfig(_requestConfig).build();
 
 		HttpPost httppost = new HttpPost(requestUri);
 		httppost.setEntity(requestBod);

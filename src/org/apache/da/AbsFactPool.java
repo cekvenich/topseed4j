@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Factory No op. implemented
+
+Use BaaS
  */
+@Deprecated
 public abstract class AbsFactPool implements PooledObjectFactory {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbsFactPool.class);

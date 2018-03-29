@@ -1,15 +1,16 @@
 package org.info.rpc;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+import org.info.net.NetU;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import org.info.net.NetU;
-
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 public class EMsg {
 	public static final String ERROR = "_ERROR";
@@ -74,7 +75,7 @@ public class EMsg {
 	public EMsg bool(Boolean r) throws Throwable {
 		if (r == null)
 			throw new Throwable(NPE);
-		resp = new byte[]{(byte) (r ? 1 : 0)};
+		resp = new byte[] { (byte) (r ? 1 : 0) };
 		return this;
 	}
 

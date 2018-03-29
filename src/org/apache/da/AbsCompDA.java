@@ -1,9 +1,9 @@
 package org.apache.da;
 
-import org.cache2k.Cache;
-
 import java.util.List;
 import java.util.Map;
+
+import org.cache2k.Cache;
 
 /**
  * Back end CRUD of a (web) component instance - but not business logic. DB
@@ -11,7 +11,10 @@ import java.util.Map;
  * Extend this for each UI component in your app. so that you can test the DB
  * access for that component. You are welcome to use composition. Should be
  * managed by a singleton - so cache and clean up are managed.
+
+  Use BaaS
  */
+@Deprecated
 public abstract class AbsCompDA { // recommend 1:1 to component
 	protected static final String CM = "?,";
 	/**
@@ -21,7 +24,7 @@ public abstract class AbsCompDA { // recommend 1:1 to component
 	// friend list; or Item's comments - done async
 	protected static final String INSERT = "INSERT into  ? ( ";
 	protected static final String DESCRIBE_TABLE = "select column_name, data_type"
-		+ " from INFORMATION_SCHEMA.COLUMNS where table_name = ?";
+			+ " from INFORMATION_SCHEMA.COLUMNS where table_name = ?";
 	// Get your results from cache that time decays. Key should have table and args
 	public Cache<Object, List<Map<String, Object>>> CACHE0;
 	public String CUSER; // the user of component, used for cache invalidation. Ex: invalidate Vic's

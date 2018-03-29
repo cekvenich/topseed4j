@@ -11,9 +11,9 @@ public class ChainPipe extends DefaultPipe {
 
 	private final static Logger logger = LoggerFactory.getLogger(ChainPipe.class);
 
-	static AbsNRouter _ch;
+	static AbsChainRouter _ch;
 
-	public ChainPipe(AbsNRouter router) throws Throwable {
+	public ChainPipe(AbsChainRouter router) throws Throwable {
 
 		_ch = router;
 		handler(_ch);

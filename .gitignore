@@ -10,3 +10,5 @@ out/
 workspace.xml
 
 **/*.log
+
+.settings/

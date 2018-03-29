@@ -1,13 +1,13 @@
 package org.apache.bro;
 
-import javafx.util.Pair;
-import javolution.util.FastTable;
-
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import javafx.util.Pair;
+import javolution.util.FastTable;
 
 public abstract class AbsBrowserExecutor {
 

@@ -1,13 +1,14 @@
 package chain;
 
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import org.apache.chain.DefaultChainRouter;
-import org.apache.chain.srv.AbsNRouter;
+import org.apache.chain.srv.AbsChainRouter;
 import org.apache.chain.srv.ChainPipe;
 import org.info.util.Confd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import zcom.cmds.DefaultPreCmd;
 
 /**
@@ -20,7 +21,7 @@ public class Example {
 
 	public static void main(String[] args) throws Throwable {
 
-		AbsNRouter chain = new DefaultChainRouter("zcom.cmds", new DefaultPreCmd());
+		AbsChainRouter chain = new DefaultChainRouter("zcom.cmds", new DefaultPreCmd());
 
 		new ChainPipe(chain).srvBoot(8081, _eg);
 
@@ -30,9 +31,9 @@ public class Example {
 	/**
 	 * If you want to make a chain class via String
 	 */
-	public static AbsNRouter _instChain(String path) throws Throwable {
+	public static AbsChainRouter _instChain(String path) throws Throwable {
 		Class<?> clazz = Class.forName(path.trim());
-		AbsNRouter inst = (AbsNRouter) clazz.newInstance();
+		AbsChainRouter inst = (AbsChainRouter) clazz.newInstance();
 		logger.info(inst.getClass().getName());
 		return inst;
 	}

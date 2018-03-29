@@ -4,7 +4,7 @@ package org.info.util;
  * 'Atomic' - pattern.
  *
  * @author vic A background thread updates needed variables - lock free. Mostly
- * singleton.
+ *         singleton.
  */
 public interface IDaemon extends Runnable {
 

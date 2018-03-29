@@ -1,17 +1,22 @@
 package org.info.net;
 
+import org.info.util.Confd;
+import org.info.util.U;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
-import org.info.util.Confd;
-import org.info.util.U;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DefaultPipe extends ChannelInitializer<SocketChannel> {
 
@@ -72,7 +77,7 @@ public class DefaultPipe extends ChannelInitializer<SocketChannel> {
 		b.group(elg);
 
 		b.option(ChannelOption.SO_BACKLOG, 2 * 1000).childOption(ChannelOption.SO_KEEPALIVE, false)
-			.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3 * 1000);
+				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3 * 1000);
 
 		b.childHandler(pipeline);
 		b.channel(NioServerSocketChannel.class);

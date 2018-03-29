@@ -1,14 +1,20 @@
 package org.info.net;
 
+import java.nio.charset.StandardCharsets;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
-
-import java.nio.charset.StandardCharsets;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpMessage;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
+import io.netty.handler.codec.http.HttpVersion;
 
 public class NetU {
 
@@ -25,7 +31,7 @@ public class NetU {
 		HttpUtil.setKeepAlive(resp, false);
 		return resp;
 	}
-	
+
 	public static FullHttpMessage makeEMsg(ByteBuf content, HttpResponseStatus code) {
 		DefaultFullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, code, content);
 		HttpUtil.setKeepAlive(resp, false);

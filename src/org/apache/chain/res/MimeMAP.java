@@ -1,7 +1,12 @@
-package org.apache.chain.srv;
+package org.apache.chain.res;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * 
+ * Use wedge when you can.
+ */
 
 public class MimeMAP {
 	public static final Map<String, String> MIME_MAP = new HashMap<>();

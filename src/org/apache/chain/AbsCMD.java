@@ -1,17 +1,18 @@
 package org.apache.chain;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.chain.srv.Ctx;
 import org.info.net.NetU;
 import org.info.rpc.EMsg;
 import org.info.rpc.J;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 
 public class AbsCMD {
 
@@ -25,7 +26,7 @@ public class AbsCMD {
 		resp.headers().add("Access-Control-Allow-Origin", "*");
 
 		ctx.httpResponse(resp);
-		return true; //done
+		return true; // done
 
 	}
 }
