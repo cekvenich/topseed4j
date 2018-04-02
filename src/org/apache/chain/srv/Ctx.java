@@ -29,6 +29,7 @@ public class Ctx extends ContextBase {
 	protected FullHttpRequest _req;
 	protected FullHttpResponse _resp;
 	public ChannelId id;
+	public String mappedPath;
 	
 
 	public Ctx(FullHttpRequest req, ChannelId id_) {
@@ -75,6 +76,14 @@ public class Ctx extends ContextBase {
 		String uri = _req.uri();
 		String path = H.getPath(uri);
 		return path;
+	}
+
+	public String mappedPath() {
+		return mappedPath;
+	}
+
+	public void mappedPath(String mappedPath) {
+		this.mappedPath = mappedPath;
 	}
 
 

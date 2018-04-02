@@ -27,7 +27,7 @@ public abstract class AbsSHandler extends ChannelInboundHandlerAdapter {
 	
 	@Override
 	public void channelActive(ChannelHandlerContext pctx) throws Exception {
-		logger.info("" + _channels.size());
+		//logger.info("" + _channels.size());
 	}
 
 	@Override
