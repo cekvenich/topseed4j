@@ -29,7 +29,7 @@ repositories {
 }
 
 def jarName = "topseed4j.jar"
-def vversion =  'v1.03.22'
+def vversion =  'v1.04.01'
 
 task cleanUp() {
   println 'clean build'
@@ -59,6 +59,14 @@ jar { // modify release
 
 
 ///// release to maven: //////////////////////////////////////////////
+//gradle publish
+//Open Nexus Repository Manager at https://oss.sonatype.org/#welcome
+//Click the Log in at upper right corner
+//At the right side, click Staging Repositories
+////Search your com.github.appthings 
+//Select the right item and click the Close button to close it. It’s like to finalize the uploading thing.
+//Click the Refresh button to get the latest updates. Remember this trick, we are in 1980s, no ajax yet.
+//Click Release Button.
 
 signing {
   sign configurations.archives
