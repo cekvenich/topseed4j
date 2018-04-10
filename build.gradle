@@ -59,6 +59,7 @@ jar { // modify release
 
 
 ///// release to maven: //////////////////////////////////////////////
+//check gradle properties keyID (last 8) and secretKeyRingFile. In Windows (gpg4win), use Cleopatra rightclick on item to 'Export Secret Keys' to topseed4j root folder
 //gradle publish
 //Open Nexus Repository Manager at https://oss.sonatype.org/#welcome
 //Click the Log in at upper right corner

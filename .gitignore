@@ -12,3 +12,5 @@ workspace.xml
 **/*.log
 
 .settings/
+/gradle.properties
+/mysec.gpg
